@@ -33,10 +33,10 @@
 <br>
 
 # Example
-![Setting1](https://raw.githubusercontent.com/galat41/bkn/main/warik/cloudflare1.png)
-![Setting2](https://raw.githubusercontent.com/galat41/bkn/main/warik/cloudflare2.png)
-![Setting3](https://raw.githubusercontent.com/galat41/bkn/main/warik/cloudflare3.png)
-![Setting4](https://raw.githubusercontent.com/galat41/bkn/main/warik/cloudflare4.png)
+![Setting1](https://raw.githubusercontent.com/brutalX-04/bkn/main/warik/cloudflare1.png)
+![Setting2](https://raw.githubusercontent.com/brutalX-04/bkn/main/warik/cloudflare2.png)
+![Setting3](https://raw.githubusercontent.com/brutalX-04/bkn/main/warik/cloudflare3.png)
+![Setting4](https://raw.githubusercontent.com/brutalX-04/bkn/main/warik/cloudflare4.png)
 
 ## Service & Port:
 <br>
@@ -70,10 +70,10 @@
 
   
 # Menu
-![Service Status](https://raw.githubusercontent.com/galat41/bkn/main/warik/julak.jpg)
+![Service Status](https://raw.githubusercontent.com/brutalX-04/bkn/main/warik/julak.jpg)
 
 # Service Status
-![Service Status](https://raw.githubusercontent.com/galat41/bkn/main/warik/service.jpg)
+![Service Status](https://raw.githubusercontent.com/brutalX-04/bkn/main/warik/service.jpg)
 
 # [Step Install]
 - Step 1 for (debian) please update first
@@ -90,7 +90,7 @@ sysctl -w net.ipv6.conf.all.disable_ipv6=1 && sysctl -w net.ipv6.conf.default.di
 [![Telegram-Channel](https://img.shields.io/badge/Channel-Telegram-blue)](https://t.me/ppn_store/)
 
 # Donate
-[![QRIS donate button](https://img.shields.io/badge/Donate-QRIS-red)](https://raw.githubusercontent.com/galat41/bkn/main/warik/qris.png)
+[![QRIS donate button](https://img.shields.io/badge/Donate-QRIS-red)](https://raw.githubusercontent.com/brutalX-04/bkn/main/warik/qris.png)
 
 # ATTENTION (MUST READ) CAREFULLY
 - PROHIBITED FOR SALE BECAUSE I GET FREE FROM THE INTERNET
