@@ -26,10 +26,10 @@ except:
 
 open('data_bot/token.txt','w').write(token)
 
-ctl  = open('nano /etc/rc.local', 'r').read()
+ctl  = open('/etc/rc.local', 'r').read()
 text = ctl.replace('exit 0', 'python3 /root/bot.py & \n\nexit 0')
 
-open('nano /etc/rc.local', 'w').write(text)
+open('/etc/rc.local', 'w').write(text)
 os.system('chmod +x /etc/rc.local')
 os.system('clear')
 
