@@ -15,19 +15,23 @@ except Exception as e:
 	os.system('pip3 install python-telegram-bot')
 
 
+
+os.system('clear')
+token = input('Input Token Bot : ')
+
 try:
-	open('data_bot/token.txt','r').read()
-
+	os.listdir('data_bot')
 except:
-	os.system('clear')
-	token = input('Input Token Bot : ')
+	os.system('mkdir data_bot')
 
-	try:
-		os.listdir('data_bot')
-	except:
-		os.system('mkdir data_bot')
+open('data_bot/token.txt','w').write(token)
 
-	open('data_bot/token.txt','w').write(token)
+ctl  = open('nano /etc/rc.local', 'r').read()
+text = ctl.replace('exit 0', 'python3 /root/bot.py & \n\nexit 0')
 
+open('nano /etc/rc.local', 'w').write(text)
+os.system('chmod +x /etc/rc.local')
+os.system('clear')
 
-os.system('nohup python3 bot.py')
+print('Succes Setup Bot Telegram!\n Server akan di reboot, Jika token valid, bot akan langsung berjalan')
+os.system('systemctl reboot')

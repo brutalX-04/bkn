@@ -9,9 +9,7 @@ import logging
 import base64
 import requests
 import datetime
-from pytz import timezone
 from bs4 import BeautifulSoup as bs
-from apscheduler.schedulers.background import BackgroundScheduler
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, InputFile
 from telegram.ext import filters, MessageHandler, ApplicationBuilder, ContextTypes, CommandHandler, ConversationHandler, CallbackQueryHandler
 
@@ -19,10 +17,7 @@ from telegram.ext import filters, MessageHandler, ApplicationBuilder, ContextTyp
 
 FIRST     = range(1)
 rd        = random.choice
-tz        = timezone('Asia/Jakarta')
-scheduler = BackgroundScheduler()
-token     = open('data_bot/token.txt', 'r').read().replace('\n','')
-
+token     = open('/root/data_bot/token.txt', 'r').read().replace('\n','')
 logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
     level=logging.INFO
@@ -31,9 +26,9 @@ logging.basicConfig(
 
 # --> Update file Create Limit
 def update_file():
-	vmess  = open('data_bot/vmess/account.txt', 'w').write('')
-	trojan = open('data_bot/trojan/account.txt', 'w').write('')
-	trial  = open('data_bot/trial/account.txt', 'w').write('')
+	vmess  = open('/root/data_bot/vmess/account.txt', 'w').write('')
+	trojan = open('/root/data_bot/trojan/account.txt', 'w').write('')
+	trial  = open('/root/data_bot/trial/account.txt', 'w').write('')
 
 	print('Succes Update File History Create Account')
 
@@ -57,7 +52,7 @@ async def menu(update, context):
 	trial    = user_vpn[2]
 
 	wel      = f"Hi, <b>{username}</b>\n<i>Welcome to bot free vpn.</i>\n\n"
-	text     = f"<pre><b>Info Server !</b>\n    Ram    : <code>{ram_used} / {ram}mb</code>\n    Cpu    : <code>{cpu_used}% / {cpu}vcpu</code>\n    Server : <code>{server}</code>\n    Isp    : <code>{isp}</code>\n\n\nInfo Create Account !\n    Vmess  : <code>{limit[0]} - 10/hari,  (3hari)</code>\n    Trojan : <code>{limit[1]} - 10/hari,  (3hari)</code>\n    Trial  : <code>{limit[2]} - 10/hari,  (1hari)</code>\n\n\nInfo Total User !\n    Vmess  : <code>{vmess}</code>\n    trojan : <code>{trojan}</code>\n    Trial  : <code>{trial}</code>\n\n\n<b>Create account reset in 00:00 !</b></pre>"
+	text     = f"<pre><b>Info Server !</b>\n    Ram    : <code>{ram_used} / {ram}mb</code>\n    Cpu    : <code>{cpu_used}% / {cpu}vcpu</code>\n    Server : <code>{server}</code>\n    Isp    : <code>{isp}</code>\n\n\nInfo Create Account !\n    Vmess  : <code>{limit[0]} - 10/hari,  (3hari)</code>\n    Trojan : <code>{limit[1]} - 10/hari,  (3hari)</code>\n    Trial  : <code>{limit[2]} - 10/hari,  (1hari)</code>\n\n\nInfo Total User !\n    Vmess  : <code>{vmess}</code>\n    trojan : <code>{trojan}</code>\n    Trial  : <code>{trial}</code>\n\n\n<b>Create account reset in everyday !</b></pre>"
 	
 	button1  = InlineKeyboardButton("Vmess", callback_data="Vmess")
 	button2  = InlineKeyboardButton("Trojan", callback_data="Trojan")
@@ -134,21 +129,23 @@ async def set_clients(user, exp, typ):
 	expired  = (time + datetime.timedelta(days=exp)).strftime('%Y-%m-%d')
 
 	if typ == 'vmess':
-		clients  = '### %s %s\n},{"id": "%s","alterId": 0,"email": "%s"\n'%(user, expired, uid, user)
+		clients1  = '#-vmess-# %s %s %s\n},{"id": "%s","alterId": 0,"email": "%s"\n'%(user, expired, uid, uid, user)
+		clients2  = '#-vmess-grpc-# %s %s %s\n},{"id": "%s","alterId": 0,"email": "%s"\n'%(user, expired, uid, uid, user)
 	
 	elif typ == 'trojan':
-		clients  = '### %s %s\n},{"password": "%s","email": "%s"\n'%(user, expired, uid, user)
+		clients1  = '#-trojan-# %s %s %s\n},{"password": "%s","email": "%s"\n'%(user, expired, uid, uid, user)
+		clients2  = '#-trojan-grpc-# %s %s %s\n},{"password": "%s","email": "%s"\n'%(user, expired, uid, uid, user)
 
 	
-	return clients, uid
+	return clients1, clients2, uid
 
 
 # --> Read Create Account Limit
 async def limit_user():
 	try:
-		vmess  = open('data_bot/vmess/account.txt', 'r').readlines()
-		trojan = open('data_bot/trojan/account.txt', 'r').readlines()
-		trial  = open('data_bot/trial/account.txt', 'r').readlines()
+		vmess  = open('/root/data_bot/vmess/account.txt', 'r').readlines()
+		trojan = open('/root/data_bot/trojan/account.txt', 'r').readlines()
+		trial  = open('/root/data_bot/trial/account.txt', 'r').readlines()
 
 		return len(vmess), len(trojan), len(trial)
 
@@ -157,17 +154,17 @@ async def limit_user():
 
 
 # --> Create Vmess
-async def vmess(update, context, clients, user, uid):
+async def vmess(update, context, clients1, clients2, user, uid):
 	try:
 		path     = '/etc/xray/config.json'
 		domain   = open('/etc/xray/domain', 'r').read().replace('\n','')
 
 		file     = open(path, 'r').read()
-		vmess    = file.replace('#vmess\n', '#vmess\n' + clients)
+		vmess    = file.replace('#vmess\n', '#vmess\n' + clients1)
 		open(path, 'w').write(vmess)
 
 		file       = open(path, 'r').read()
-		vmess_grpc = file.replace('#vmessgrpc\n', '#vmessgrpc\n' + clients)
+		vmess_grpc = file.replace('#vmessgrpc\n', '#vmessgrpc\n' + clients2)
 		open(path, 'w').write(vmess_grpc)
 
 		os.system('systemctl restart xray')
@@ -186,17 +183,17 @@ async def vmess(update, context, clients, user, uid):
 
 
 # --> Create Tojan
-async def trojan(update, context, clients, user, uid):
+async def trojan(update, context, clients1, clients2, user, uid):
 	try:
 		path     = '/etc/xray/config.json'
 		domain   = open('/etc/xray/domain', 'r').read().replace('\n','')
 
 		file     = open(path, 'r').read()
-		trojan   = file.replace('#trojanws\n', '#trojanws\n' + clients)
+		trojan   = file.replace('#trojanws\n', '#trojanws\n' + clients1)
 		open(path, 'w').write(trojan)
 
 		file        = open(path, 'r').read()
-		trojan_grpc = file.replace('#trojangrpc\n', '#trojangrpc\n' + clients)
+		trojan_grpc = file.replace('#trojangrpc\n', '#trojangrpc\n' + clients2)
 		open(path, 'w').write(trojan_grpc)
 
 		os.system('systemctl restart xray')
@@ -235,44 +232,44 @@ async def button_click(update, context):
 		if limit[2] < 10:
 			typ  = function.split('-')[1]
 			user = 'Trial-' + rds + rdr
-			path = 'data_bot/trial/account.txt'
+			path = '/root/data_bot/trial/account.txt'
 			file = open(path, 'r').read()
 
 			if user_id in file:
-				await context.bot.send_message(chat_id=update.effective_chat.id, text='You create account trial limit, please commback latter !')
+				await context.bot.send_message(chat_id=update.effective_chat.id, text='<i>You create account trial limit, please commback latter !</i>', parse_mode="HTML")
 
 			else:
 				open(path, 'a').write(user + '|' + user_id + '\n')
 				if 'Vmess' in typ:
-					clients, uid = await set_clients(user, 1, 'vmess')
-					await vmess(update, context, clients, user, uid)
+					clients1, clients2, uid = await set_clients(user, 1, 'vmess')
+					await vmess(update, context, clients1, clients2, user, uid)
 
 				elif 'Trojan' in typ:
-					clients, uid = await set_clients(user, 1, 'trojan')
-					await trojan(update, context, clients, user, uid)
+					clients1, clients2, uid = await set_clients(user, 1, 'trojan')
+					await trojan(update, context, clients1, clients2, user, uid)
 
 		else:
-			await context.bot.send_message(chat_id=update.effective_chat.id, text='Create account trial max, please commback latter !')
+			await context.bot.send_message(chat_id=update.effective_chat.id, text='<i>Create account trial max, please commback latter !<i/>', parse_mode="HTML")
 
 	elif 'Vmess' in function:
 		if limit[0] < 10:
-			clients, uid = await set_clients(user, 3, 'vmess')
-			path = 'data_bot/vmess/account.txt'
+			clients1, clients2, uid = await set_clients(user, 3, 'vmess')
+			path = '/root/data_bot/vmess/account.txt'
 			file = open(path, 'r').read()
 
 			if user_id in file:
 				await context.bot.send_message(chat_id=update.effective_chat.id, text='<i>You create account vmess limit, please commback latter !</i>', parse_mode="HTML")
 			else:
 				open(path, 'a').write(user + '|' + user_id + '\n')
-				await vmess(update, context, clients, user, uid)
+				await vmess(update, context, clients1, clients2, user, uid)
 
 		else:
 			await context.bot.send_message(chat_id=update.effective_chat.id, text='<i>Create account vmess max, please commback latter !</i>', parse_mode="HTML")
 
 	elif 'Trojan' in function:
 		if limit[1] < 10:
-			clients, uid = await set_clients(user, 3, 'trojan')
-			path = 'data_bot/trojan/account.txt'
+			clients1, clients2, uid = await set_clients(user, 3, 'trojan')
+			path = '/root/data_bot/trojan/account.txt'
 			file = open(path, 'r').read()
 
 			if user_id in file:
@@ -280,7 +277,7 @@ async def button_click(update, context):
 
 			else:
 				open(path, 'a').write(user + '|' + user_id + '\n')
-				await trojan(update, context, clients, user, uid)
+				await trojan(update, context, clients1, clients2, user, uid)
 
 		else:
 			await context.bot.send_message(chat_id=update.effective_chat.id, text='<i>Create account trojan max, please commback latter !</i>', parse_mode="HTML")
@@ -301,21 +298,20 @@ async def echo(update, context):
 # --> Running
 if __name__ == '__main__':
 	try:
-		open('data_bot/vmess/account.txt', 'r').read()
-		open('data_bot/trojan/account.txt', 'r').read()
-		open('data_bot/trial/account.txt', 'r').read()
+		open('/root/data_bot/vmess/account.txt', 'r').read()
+		open('/root/data_bot/trojan/account.txt', 'r').read()
+		open('/root/data_bot/trial/account.txt', 'r').read()
 	except Exception as e:
-		os.system('mkdir data_bot')
-		os.system('mkdir data_bot/vmess')
-		os.system('mkdir data_bot/trojan')
-		os.system('mkdir data_bot/trial')
-		open('data_bot/trial/account.txt', 'a').write('')
-		open('data_bot/vmess/account.txt', 'a').write('')
-		open('data_bot/trojan/account.txt', 'a').write('')
+		os.system('mkdir /root/data_bot')
+		os.system('mkdir /root/data_bot/vmess')
+		os.system('mkdir /root/data_bot/trojan')
+		os.system('mkdir /root/data_bot/trial')
+		open('/root/data_bot/trial/account.txt', 'a').write('')
+		open('/root/data_bot/vmess/account.txt', 'a').write('')
+		open('/root/data_bot/trojan/account.txt', 'a').write('')
 
-	scheduler.add_job(update_file, 'cron', hour=0, minute=0, timezone=tz)
-	scheduler.start()
 
+	update_file()
 	application = ApplicationBuilder().token(token).build()
 
 	application.add_handler(CallbackQueryHandler(button_click))

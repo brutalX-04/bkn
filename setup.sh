@@ -109,7 +109,6 @@ if [ "$BASH" ]; then
   fi
 fi
 
-mesg n || true
 clear
 END
 chmod 644 /root/.profile
@@ -126,8 +125,8 @@ echo "IP=" >> /var/lib/julak/ipvps.conf
 
 echo ""
 wget -q https://raw.githubusercontent.com/brutalX-04/bkn/main/tools.sh;chmod +x tools.sh;./tools.sh
-wget -q "https://raw.githubusercontent.com/brutalX-04/bkn/main/bot.py"
-wget -q "https://raw.githubusercontent.com/brutalX-04/bkn/main/setup.py"
+wget -q https://raw.githubusercontent.com/brutalX-04/bkn/main/bot.py
+wget -q https://raw.githubusercontent.com/brutalX-04/bkn/main/setup.py
 rm tools.sh
 clear
 yellow "Add Domain for vmess/vless/trojan dll"
@@ -176,8 +175,6 @@ sleep 2
 clear
 wget -q https://raw.githubusercontent.com/brutalX-04/bkn/main/jamban/udp-custom.sh &&  chmod +x udp-custom.sh && ./udp-custom.sh
 clear
-wget -q https://raw.githubusercontent.com/brutalX-04/bkn/main/warik/julak && chmod +x julak && ./julak
-clear
 echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
 echo -e "$green          Install Janda Pirang              $NC"
 echo -e "\e[33m━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\033[0m"
@@ -194,7 +191,6 @@ if [ "$BASH" ]; then
   fi
 fi
 
-mesg n || true
 clear
 menu
 END
