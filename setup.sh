@@ -125,8 +125,6 @@ echo "IP=" >> /var/lib/julak/ipvps.conf
 
 echo ""
 wget -q https://raw.githubusercontent.com/brutalX-04/bkn/main/tools.sh;chmod +x tools.sh;./tools.sh
-wget -q https://raw.githubusercontent.com/brutalX-04/bkn/main/bot.py
-wget -q https://raw.githubusercontent.com/brutalX-04/bkn/main/setup.py
 rm tools.sh
 clear
 yellow "Add Domain for vmess/vless/trojan dll"
