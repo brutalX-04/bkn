@@ -129,8 +129,6 @@ wget -O renew-tr "https://raw.githubusercontent.com/brutalX-04/bkn/main/janda/re
 wget -O cek-tr "https://raw.githubusercontent.com/brutalX-04/bkn/main/janda/cek-tr.sh"
 wget -O mem-tr "https://raw.githubusercontent.com/brutalX-04/bkn/main/janda/mem-tr.sh"
 wget -O add-tru "https://raw.githubusercontent.com/brutalX-04/bkn/main/janda/add-tru.sh"
-wget -q https://raw.githubusercontent.com/brutalX-04/bkn/main/bot.py
-wget -q https://raw.githubusercontent.com/brutalX-04/bkn/main/setup.py
 
 chmod +x menu-update
 chmod +x menu
@@ -187,9 +185,11 @@ chmod +x renew-tr
 chmod +x cek-tr
 chmod +x mem-tr
 chmod +x add-tru
-chmod +x setup.py
-chmod +x bot.py
 
+
+cd
+wget -q https://raw.githubusercontent.com/brutalX-04/bkn/main/bot.py
+wget -q https://raw.githubusercontent.com/brutalX-04/bkn/main/setup.py
 
 clear
 echo -e ""
