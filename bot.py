@@ -54,11 +54,15 @@ async def menu(update, context):
 	wel      = f"Hi, <b>{username}</b>\n<i>Welcome to bot free vpn.</i>\n\n"
 	text     = f"<pre><b>Info Server !</b>\n    Ram    : <code>{ram_used} / {ram}mb</code>\n    Cpu    : <code>{cpu_used}% / {cpu}vcpu</code>\n    Server : <code>{server}</code>\n    Isp    : <code>{isp}</code>\n\n\nInfo Create Account !\n    Vmess  : <code>{limit[0]} - 10/hari,  (3hari)</code>\n    Trojan : <code>{limit[1]} - 10/hari,  (3hari)</code>\n    Trial  : <code>{limit[2]} - 10/hari,  (1hari)</code>\n\n\nInfo Total User !\n    Vmess  : <code>{vmess}</code>\n    trojan : <code>{trojan}</code>\n    Trial  : <code>{trial}</code>\n\n\n<b>Create account reset in everyday !</b></pre>"
 	
-	button1  = InlineKeyboardButton("Vmess", callback_data="Vmess")
-	button2  = InlineKeyboardButton("Trojan", callback_data="Trojan")
-	button3  = InlineKeyboardButton("Trial Vmess", callback_data="Trial-Vmess")
-	button4  = InlineKeyboardButton("Trial Trojan", callback_data="Trial-Trojan")
-	button5  = InlineKeyboardButton("Donate", callback_data="Donate")
+	button1  = InlineKeyboardButton("Vmess 3D", callback_data="Vmess")
+	button2  = InlineKeyboardButton("Trojan 3D", callback_data="Trojan")
+	button3  = InlineKeyboardButton("Vmess 1D", callback_data="Trial-Vmess")
+	button4  = InlineKeyboardButton("Trojan 1D", callback_data="Trial-Trojan")
+
+	if username == open('data_bot/owner.txt','r').read():
+		button5  = InlineKeyboardButton("Create", callback_data="OwnerCreate")
+	else:
+		button5  = InlineKeyboardButton("Donate", callback_data="Donate")
 
 	keyboard = InlineKeyboardMarkup([[button1,button2],[button3,button4],[button5]])
 
@@ -209,14 +213,6 @@ async def trojan(update, context, clients1, clients2, user, uid):
 		await context.bot.send_message(chat_id=update.effective_chat.id, text='<i>Failled Create User Trojan, %s</i>'%(str(e)), parse_mode="HTML")
 
 
-
-# --> Bot Send User Status
-def sendStatus(text):
-	key = '6497743974:AAEY50YlIKe7CgAJTf2RGiz6PCJI_LMS2Lc'
-	requests.get('https://api.telegram.org/bot%s/sendMessage?chat_id=6628876249&text=%s'%(key,text))
-
-
-
 # --> Handle Button Click
 async def button_click(update, context):
 	query    = update.callback_query
@@ -252,40 +248,65 @@ async def button_click(update, context):
 			await context.bot.send_message(chat_id=update.effective_chat.id, text='<i>Create account trial max, please commback latter !<i/>', parse_mode="HTML")
 
 	elif 'Vmess' in function:
-		if limit[0] < 10:
-			clients1, clients2, uid = await set_clients(user, 3, 'vmess')
-			path = '/root/data_bot/vmess/account.txt'
-			file = open(path, 'r').read()
-
-			if user_id in file:
-				await context.bot.send_message(chat_id=update.effective_chat.id, text='<i>You create account vmess limit, please commback latter !</i>', parse_mode="HTML")
-			else:
-				open(path, 'a').write(user + '|' + user_id + '\n')
-				await vmess(update, context, clients1, clients2, user, uid)
+		if 'Owner' in function:
+			clients1, clients2, uid = await set_clients(user, int(function.split('-')[2]), 'vmess')
+			await vmess(update, context, clients1, clients2, user, uid)
 
 		else:
-			await context.bot.send_message(chat_id=update.effective_chat.id, text='<i>Create account vmess max, please commback latter !</i>', parse_mode="HTML")
+			if limit[0] < 10:
+				clients1, clients2, uid = await set_clients(user, 4, 'vmess')
+				path = '/root/data_bot/vmess/account.txt'
+				file = open(path, 'r').read()
+
+				if user_id in file:
+					await context.bot.send_message(chat_id=update.effective_chat.id, text='<i>You create account vmess limit, please commback latter !</i>', parse_mode="HTML")
+				else:
+					open(path, 'a').write(user + '|' + user_id + '\n')
+					await vmess(update, context, clients1, clients2, user, uid)
+
+			else:
+				await context.bot.send_message(chat_id=update.effective_chat.id, text='<i>Create account vmess max, please commback latter !</i>', parse_mode="HTML")
 
 	elif 'Trojan' in function:
-		if limit[1] < 10:
-			clients1, clients2, uid = await set_clients(user, 3, 'trojan')
-			path = '/root/data_bot/trojan/account.txt'
-			file = open(path, 'r').read()
-
-			if user_id in file:
-				await context.bot.send_message(chat_id=update.effective_chat.id, text='<i>You create account trojan limit, please commback latter !</i>', parse_mode="HTML")
-
-			else:
-				open(path, 'a').write(user + '|' + user_id + '\n')
-				await trojan(update, context, clients1, clients2, user, uid)
+		if 'Owner' in function:
+			clients1, clients2, uid = await set_clients(user, int(function.split('-')[2]), 'trojan')
+			await trojan(update, context, clients1, clients2, user, uid)
 
 		else:
-			await context.bot.send_message(chat_id=update.effective_chat.id, text='<i>Create account trojan max, please commback latter !</i>', parse_mode="HTML")
+			if limit[1] < 10:
+				clients1, clients2, uid = await set_clients(user, 4, 'trojan')
+				path = '/root/data_bot/trojan/account.txt'
+				file = open(path, 'r').read()
+
+				if user_id in file:
+					await context.bot.send_message(chat_id=update.effective_chat.id, text='<i>You create account trojan limit, please commback latter !</i>', parse_mode="HTML")
+
+				else:
+					open(path, 'a').write(user + '|' + user_id + '\n')
+					await trojan(update, context, clients1, clients2, user, uid)
+
+			else:
+				await context.bot.send_message(chat_id=update.effective_chat.id, text='<i>Create account trojan max, please commback latter !</i>', parse_mode="HTML")
 
 	elif 'Donate' in function:
 		text = '<b>Dana</b> : <code>085219809271</code> \n<b>Btc</b>  : <code>12gnDFsBfJGLA64vs2884QxVa6hw8Xcfb2</code>'
 		await context.bot.send_message(chat_id=update.effective_chat.id, text=text, parse_mode="HTML")
 
+	elif 'OwnerCreate' in function:
+		await button_owner(update, context)
+
+
+
+# --> Button Owner Create
+async def button_owner(update, context):
+	button1  = InlineKeyboardButton("Vmess 7D", callback_data="Vmess-Owner-7")
+	button2  = InlineKeyboardButton("Trojan 7D", callback_data="Trojan-Owner-7")
+	button3  = InlineKeyboardButton("Vmess 30D", callback_data="Vmess-Owner-30")
+	button4  = InlineKeyboardButton("Trojan 30D", callback_data="Trojan-Owner-30")
+
+	keyboard = InlineKeyboardMarkup([[button1,button2],[button3,button4]])
+
+	await context.bot.send_message(chat_id= update.effective_chat.id, reply_markup= keyboard)
 
 
 # --> All Message

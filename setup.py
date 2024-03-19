@@ -18,6 +18,7 @@ except Exception as e:
 
 os.system('clear')
 token = input('Input Token Bot : ')
+owner = input('Input Owner Username : ')
 
 try:
 	os.listdir('data_bot')
@@ -25,6 +26,7 @@ except:
 	os.system('mkdir data_bot')
 
 open('data_bot/token.txt','w').write(token)
+open('data_bot/owner.txt','w').write(owner)
 
 ctl  = open('/etc/rc.local', 'r').read()
 text = ctl.replace('exit 0', 'python3 /root/bot.py & \n\nexit 0')
