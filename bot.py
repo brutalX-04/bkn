@@ -306,7 +306,7 @@ async def button_owner(update, context):
 
 	keyboard = InlineKeyboardMarkup([[button1,button2],[button3,button4]])
 
-	await context.bot.send_message(chat_id= update.effective_chat.id, reply_markup= keyboard)
+	await context.bot.send_message(chat_id= update.effective_chat.id, text="Only Owner !", reply_markup= keyboard)
 
 
 # --> All Message
